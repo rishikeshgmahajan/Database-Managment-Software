@@ -1,6 +1,3 @@
-
-![Static Badge](https://img.shields.io/badge/Under%20Major%20Development-red?style=flat)
-
 # Database-Managment-Software
 
 ![Static Badge](https://img.shields.io/badge/Python-blue?style=for-the-badge&logo=python&logoColor=yellow&logoSize=20&labelColor=grey&color=blue)
