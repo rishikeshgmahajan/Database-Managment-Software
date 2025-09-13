@@ -6,8 +6,8 @@ import sqlite3
 from PyQt5 import QtGui
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QFrame, QScrollArea, QLabel, QLineEdit, QPushButton
-from PyQt5.QtWidgets  import QUndoCommand, QTableWidgetItem
-from PyQt5.QtWidgets  import QUndoStack
+from PyQt5.QtWidgets import QUndoCommand, QTableWidgetItem
+from PyQt5.QtWidgets import QUndoStack
 from PyQt5.QtGui import QFontMetrics
 
 class FlexibleTabBar(QTabBar):
@@ -17,14 +17,14 @@ class FlexibleTabBar(QTabBar):
         font_metrics = QFontMetrics(self.font())
         width = font_metrics.width(text) + 80
         
-        return QSize(width, 30)  # You can adjust the height as needed
+        return QSize(width, 30)
 
 class DeleteRowsCommand(QUndoCommand):
     def __init__(self, table_widget, rows, row_data, parent=None):
         super().__init__(parent)
         self.table_widget = table_widget
         self.rows = sorted(rows, reverse=True)
-        self.row_data = row_data  # Data to restore rows if undone
+        self.row_data = row_data
 
     def undo(self):
         for i, row in enumerate(self.rows):
@@ -42,7 +42,7 @@ class DeleteColumnsCommand(QUndoCommand):
         super().__init__(parent)
         self.table_widget = table_widget
         self.columns = sorted(columns, reverse=True)
-        self.column_data = column_data  # Data to restore columns if undone
+        self.column_data = column_data
 
     def undo(self):
         for i, col in enumerate(self.columns):
@@ -58,8 +58,8 @@ class DeleteColumnsCommand(QUndoCommand):
 class DatabaseApp(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Vidwo - DataCord")  # Initial title when no file is opened
-        self.current_file_name = None  # Variable to store the current file name
+        self.setWindowTitle("Vidwo - DataCord")
+        self.current_file_name = None
         self.setStyleSheet(myStyleSheet())
 
         self.centralWidget = QWidget()
@@ -104,7 +104,7 @@ padding:3px;
         button_layout.addWidget(close_tab_button)
         button_layout.addWidget(Toggle_tab_button)
         button_container.setLayout(button_layout)
-        button_layout.setContentsMargins(0, 0, 0, 0)  # Set margins to 0
+        button_layout.setContentsMargins(0, 0, 0, 0)
         button_container.setFixedHeight(25)
 
         self.tab_widget.setCornerWidget(button_container)
@@ -114,35 +114,35 @@ padding:3px;
         self.tab_widget.tabCloseRequested.connect(self.close_tab)
 
         self.tab_widget.setStyleSheet("""
-                                      QTabBar{
-                                      padding-left:4px;
-                                      padding-right:4px;
-                                      }
+                                        QTabBar{
+                                        padding-left:4px;
+                                        padding-right:4px;
+                                        }
 QTabBar::tab { 
 margin-top: 4px; 
 padding:3px;
-                                      margin-left:3px;
-                                      margin-right:3px;
+                                        margin-left:3px;
+                                        margin-right:3px;
 margin-bottom:2px;
 border-radius:5px;
 border:1px solid grey;
 }
-                                      QTabBar::tab:hover { 
+                                        QTabBar::tab:hover { 
 margin-top: 4px; 
 padding:3px;
 margin-bottom:2px;
-                                      margin-left:3px;
-                                      margin-right:3px;
+                                        margin-left:3px;
+                                        margin-right:3px;
 
 border:2px solid #820F41;
 }
-                                                                            QTabBar::tab:selected { 
+                                                QTabBar::tab:selected { 
 margin-top: 4px; 
 padding:3px;
 margin-bottom:2px;
-                                      margin-left:3px;
-                                      margin-right:3px;
-                                      background:#FFE6F0;
+                                        margin-left:3px;
+                                        margin-right:3px;
+                                        background:#FFE6F0;
 
 border:2px solid #820F41;
 }
@@ -164,9 +164,7 @@ border:2px solid #820F41;
         self.create_statusbar()
 
     def toggle_tab_position(self):
-        # Increment the position index and wrap around if necessary
         self.position_index = (self.position_index + 1) % len(self.positions)
-        # Set the new tab position
         self.tab_widget.setTabPosition(self.positions[self.position_index])
 
     def update_window_title(self):
@@ -180,7 +178,6 @@ border:2px solid #820F41;
     def create_menu_bar(self):
         menubar = self.menuBar()
 
-        # File Menu
         file_menu = menubar.addMenu("File")
 
         open_file_action = QAction(QtGui.QIcon("C:\\Users\\rishi\\OneDrive\\Documents\\DC_Icons\\opendata.png"),"Open File", self)
@@ -209,14 +206,12 @@ border:2px solid #820F41;
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
 
-        # Edit Menu
         edit_menu = menubar.addMenu("Edit")
 
         search_action = QAction(QtGui.QIcon("C:\\Users\\rishi\\OneDrive\\Documents\\DC_Icons\\search.png"),"Search", self)
         search_action.triggered.connect(self.open_search_dialog)
         edit_menu.addAction(search_action)
 
-        # Insert Menu
         insert_menu = menubar.addMenu("Insert")
 
         header_label_action = QAction(QtGui.QIcon("C:\\Users\\rishi\\OneDrive\\Documents\\DC_Icons\\addheadl.png"),"Header Label", self)
@@ -233,7 +228,6 @@ border:2px solid #820F41;
         add_tab_button.triggered.connect(self.add_tab)
         insert_menu.addAction(add_tab_button)
 
-        # View Menu (Placeholder)
         view_menu = menubar.addMenu("View")
 
         toggle_toolbar_action = QAction("Toggle Toolbar", self)
@@ -244,7 +238,6 @@ border:2px solid #820F41;
         toggle_statusbar_action.triggered.connect(self.toggle_statusbar)
         view_menu.addAction(toggle_statusbar_action)
 
-        # Help Menu
         help_menu = menubar.addMenu("Help")
         menubar.setFont(QFont("Arial Rounded MT Bold", 10))
 
@@ -286,15 +279,12 @@ border:2px solid #820F41;
             self.tab_widget.tabBar().setTabTextColor(index, color)
 
     def create_new_tab(self,file_name=None):
-        # Increment tab count
         self.tab_count += 1
 
-        # Create table widget for new tab
         table_widget = QTableWidget()
         table_widget.setColumnCount(3)
         table_widget.setHorizontalHeaderLabels(["ID", "Name", "Phone"])
 
-        # Add the table widget to a new tab with dynamic name
         if file_name:
             tab_name = file_name
         elif self.tab_count == 1:
@@ -305,17 +295,13 @@ border:2px solid #820F41;
         
 
     def close_tab(self, index):
-        # Remove the tab at the specified index
         self.tab_widget.removeTab(index)
 
-        # Decrement tab count
         self.tab_count -= 1
 
-        # If all tabs are closed or only one tab remains, reset tab count to 0
         if self.tab_count <= 1:
             self.tab_count = 0
 
-        # If the last remaining tab is named "Table 1", update its name
         if self.tab_count == 1:
             self.tab_widget.setTabText(0, "Table 1")
 
@@ -338,7 +324,6 @@ border:2px solid #820F41;
         self.statusbar.addWidget(self.count_label)
         self.update_status_bar()
         
-        # Connect signals to update status bar
         self.contact_table.model().dataChanged.connect(self.update_status_bar)
         self.contact_table.itemChanged.connect(self.update_status_bar) 
     
@@ -445,7 +430,7 @@ border:2px solid #820F41;
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.toggle_flash)
-        self.timer.start(1000)  # Flash every 1 second
+        self.timer.start(1000)
 
         self.flash_on = True
 
@@ -521,7 +506,7 @@ border:2px solid #820F41;
 
     def create_widgets(self):
         self.contact_table = QTableWidget()
-        self.contact_table.setColumnCount(3)  # Adjust column count based on headers
+        self.contact_table.setColumnCount(3)
         self.contact_table.setHorizontalHeaderLabels(["ID", "Name", "Phone"])
         self.layout.addWidget(self.contact_table)
 
@@ -662,7 +647,7 @@ QComboBox {
         current_column = self.contact_table.currentColumn()
         
         if current_column == -1:
-            return  # No column selected
+            return
         
         if option == "Sort A to Z":
             self.contact_table.sortItems(current_column, Qt.AscendingOrder)
@@ -674,14 +659,12 @@ QComboBox {
     def cut_cells(self):
         selected_items = self.contact_table.selectedItems()
         if selected_items:
-            # Copy to clipboard
             clipboard = QApplication.clipboard()
             mime_data = QMimeData()
             text = '\n'.join([item.text() for item in selected_items])
             mime_data.setText(text)
             clipboard.setMimeData(mime_data)
             
-            # Clear the content of the selected cells
             for item in selected_items:
                 item.setText('')
 
@@ -696,7 +679,6 @@ QComboBox {
             print("No cells selected.")
             return
 
-        # Collect the selected cell data
         data = {}
         for selected_range in selected_ranges:
             for row in range(selected_range.topRow(), selected_range.bottomRow() + 1):
@@ -707,9 +689,8 @@ QComboBox {
                     if item:
                         data[row][col] = item.text()
                     else:
-                        data[row][col] = ""  # Empty cell
+                        data[row][col] = ""
 
-        # Convert the collected data into a formatted string
         rows = sorted(data.keys())
         if not rows:
             text_to_copy = ""
@@ -720,12 +701,10 @@ QComboBox {
                 row_data = [data[row].get(col, "") for col in cols]
                 text_to_copy += "\t".join(row_data) + "\n"
 
-        # Store the copied data
         self.copied_data = text_to_copy.strip()
         print("Copied Data:")
         print(self.copied_data)
 
-        # Copy to clipboard
         clipboard.setText(self.copied_data)
 
     def paste_cells(self):
@@ -740,16 +719,13 @@ QComboBox {
             print("No cells selected.")
             return
 
-        # Determine the range of selected cells
         selected_range = selected_ranges[0]
         start_row = selected_range.topRow()
         start_col = selected_range.leftColumn()
 
-        # Split copied data into lines and cells
         copied_lines = self.copied_data.split('\n')
         copied_data = [line.split('\t') for line in copied_lines]
 
-        # Ensure we do not exceed the table dimensions
         max_rows = self.contact_table.rowCount()
         max_cols = self.contact_table.columnCount()
 
@@ -766,7 +742,7 @@ QComboBox {
                     print(f"Skipping cell ({r + start_row}, {c + start_col}) - out of bounds.")
 
     def delete_selected_row(self):
-        table_widget = self.contact_table  # Assuming 'contact_table' is your QTableWidget instance
+        table_widget = self.contact_table
         selected_indexes = table_widget.selectedIndexes()
         if selected_indexes:
             rows = set(index.row() for index in selected_indexes)
@@ -791,30 +767,25 @@ QComboBox {
         
         if file_name:
             try:
-                # Retrieve the currently active tab and its table widget
                 current_tab_index = self.tab_widget.currentIndex()
                 self.contact_table = self.tab_widget.widget(current_tab_index)
 
-                # Get the column names and data from the QTableWidget
                 column_names = [self.contact_table.horizontalHeaderItem(col).text() for col in range(self.contact_table.columnCount())]
                 rows = []
                 for row in range(self.contact_table.rowCount()):
                     row_data = [self.contact_table.item(row, col).text() if self.contact_table.item(row, col) else "" for col in range(self.contact_table.columnCount())]
                     rows.append(row_data)
 
-                # Connect to the new database file and create a table
                 conn = sqlite3.connect(file_name)
                 cursor = conn.cursor()
 
-                # Drop the existing table if it exists
                 cursor.execute(f"DROP TABLE IF EXISTS {table_name};")
 
-                # Create the table with columns matching those in the QTableWidget
-                column_defs = ", ".join([f"{col} TEXT" for col in column_names])
+                column_defs = ", ".join([f'"{col}" TEXT' for col in column_names])
                 cursor.execute(f"CREATE TABLE {table_name} ({column_defs});")
 
-                # Insert the data into the table
-                cursor.executemany(f"INSERT INTO {table_name} ({', '.join(column_names)}) VALUES ({', '.join('?' * len(column_names))})", rows)
+                placeholders = ", ".join(["?"] * len(column_names))
+                cursor.executemany(f"INSERT INTO {table_name} VALUES ({placeholders});", rows)
                 
                 conn.commit()
                 conn.close()
@@ -823,11 +794,11 @@ QComboBox {
 
             except sqlite3.Error as e:
                 QMessageBox.warning(self, "Error", f"An error occurred while saving the database:\n{str(e)}")
-                print(f"SQLite error: {e}")  # Debug print for console
+                print(f"SQLite error: {e}")
 
             except Exception as ex:
                 QMessageBox.warning(self, "Error", f"An unexpected error occurred:\n{str(ex)}")
-                print(f"Unexpected error: {ex}")  # Debug print for console
+                print(f"Unexpected error: {ex}")
 
     def save_add_database(self, table_name="contacts"):
         options = QFileDialog.Options()
@@ -835,27 +806,23 @@ QComboBox {
         
         if file_name:
             try:
-                # Retrieve the currently active tab and its table widget
                 current_tab_index = self.tab_widget.currentIndex()
                 self.contact_table = self.tab_widget.widget(current_tab_index)
 
-                # Get the column names and data from the QTableWidget
                 column_names = [self.contact_table.horizontalHeaderItem(col).text() for col in range(self.contact_table.columnCount())]
                 rows = []
                 for row in range(self.contact_table.rowCount()):
                     row_data = [self.contact_table.item(row, col).text() if self.contact_table.item(row, col) else "" for col in range(self.contact_table.columnCount())]
                     rows.append(row_data)
 
-                # Connect to the new database file and create a table
                 conn = sqlite3.connect(file_name)
                 cursor = conn.cursor()
 
-                # Create the table with columns matching those in the QTableWidget
-                column_defs = ", ".join([f"{col} TEXT" for col in column_names])
+                column_defs = ", ".join([f'"{col}" TEXT' for col in column_names])
                 cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} ({column_defs});")
 
-                # Insert the data into the table
-                cursor.executemany(f"INSERT INTO {table_name} ({', '.join(column_names)}) VALUES ({', '.join('?' * len(column_names))})", rows)
+                placeholders = ", ".join(["?"] * len(column_names))
+                cursor.executemany(f"INSERT INTO {table_name} VALUES ({placeholders});", rows)
                 
                 conn.commit()
                 conn.close()
@@ -926,39 +893,31 @@ QComboBox {
         
         if file_name:
             try:
-                # Connect to the selected database
                 self.setWindowTitle("Vidwo - DataCord : " + file_name)
                 conn = sqlite3.connect(file_name)
                 cursor = conn.cursor()
 
-                # Check if the table exists
                 cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}';")
                 if not cursor.fetchone():
                     QMessageBox.warning(self, "Error", f"Table '{table_name}' does not exist in the database.")
                     return
 
-                # Fetch data from the table
                 cursor.execute(f"SELECT * FROM {table_name}")
                 data = cursor.fetchall()
 
-                # Get column names
                 column_names = [description[0] for description in cursor.description]
 
                 conn.close()
 
-                # Retrieve the currently active tab and its table widget
                 current_tab_index = self.tab_widget.currentIndex()
                 self.contact_table = self.tab_widget.widget(current_tab_index)
                 
-                # Clear existing table contents
                 self.contact_table.clearContents()
                 self.contact_table.setRowCount(0)
 
-                # Set column headers
                 self.contact_table.setColumnCount(len(column_names))
                 self.contact_table.setHorizontalHeaderLabels(column_names)
 
-                # Populate the table with data from the database
                 for row_data in data:
                     row = self.contact_table.rowCount()
                     self.contact_table.insertRow(row)
@@ -1008,7 +967,7 @@ class AddContactDialog(QDialog):
 
     def get_data(self):
         data = []
-        for i in range(1, self.frame_layout.count(), 2):  # Skip label widgets
+        for i in range(1, self.frame_layout.count(), 2):
             item = self.frame_layout.itemAt(i)
             if item and isinstance(item.widget(), QLineEdit):
                 data.append(item.widget().text())
@@ -1085,14 +1044,14 @@ class HeaderDialog(QDialog):
     def create_labels_input(self):
         for label in self.existing_labels:
             label_input = QLineEdit(label)
-            label_input.setMinimumHeight(25)  # Set minimum height for each line edit
+            label_input.setMinimumHeight(25)
             self.frame_layout.addWidget(label_input)
 
     def add_label(self):
         focus_widget = QApplication.focusWidget()
         if isinstance(focus_widget, QLineEdit):
             label_input = QLineEdit()
-            label_input.setMinimumHeight(25)  # Set minimum height for each new line edit
+            label_input.setMinimumHeight(25)
             index = self.frame_layout.indexOf(focus_widget)
             if index >= 0:
                 self.frame_layout.insertWidget(index + 1, label_input)
@@ -1106,7 +1065,7 @@ class HeaderDialog(QDialog):
         while self.frame_layout.count() > 0:
             item = self.frame_layout.takeAt(0)
             widget = item.widget()
-            if widget:  # Check if the item is a widget
+            if widget:
                 widget.deleteLater()
 
     def get_labels(self):
